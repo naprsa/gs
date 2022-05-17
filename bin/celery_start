@@ -1,0 +1,19 @@
+#!/bin/bash
+
+NAME="celery"                                  # Name of the application
+DJANGODIR=/www/gs-web/src             # Django project directory
+USER=giftsol                                        # the user to run as
+GROUP=webapps                                     # the group to run as
+DJANGO_SETTINGS_MODULE=core.settings             # which settings file should Django use
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DJANGODIR
+source ../venv/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Start your Celery Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+exec celery worker -A core  --beat -S django --loglevel=info

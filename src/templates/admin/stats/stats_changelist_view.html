@@ -1,0 +1,189 @@
+{% extends "admin/base_site.html" %}
+
+  <!-- Fengyuan Chen's Datepicker -->
+{% block content_title %}
+    <h1> Stats Summary </h1>
+{% endblock %}
+{% block content %}
+<div class="container">
+<h2>Disk Info</h2>
+<table>
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#">Used</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Free</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Total</a>
+          </div>
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> {{ disk_space.used}} </td>
+        <td> {{ disk_space.free }} </td>
+        <td> {{ disk_space.total }} </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <hr style="margin: 10px 10px ">
+</div>
+<div class="container">
+  <h2>Filter Decks</h2>
+  <form method="GET">
+    {% csrf_token %}
+    {% if form_period.errors %}
+      errors: {{ form_period.errors }}
+    {% endif %}
+    {% for f in form_period %}
+      <b>{{ f.label }}:</b> {{ f }}
+    {% endfor %}
+
+    <input type="submit" class="default" value="Filter" style="float: inherit; margin: 0 10px ">
+
+  </form>
+  <hr style="margin: 10px 10px ">
+</div>
+<h3>Payed decks stats</h3>
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#">Category</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Total</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Total Promo</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">
+              <strong>Total Money</strong>
+            </a>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> Payed decks</td>
+        <td> {{ payed_decks.all }} </td>
+        <td> {{ payed_decks.promo }} </td>
+        <td> {{ payed_decks.money }} </td>
+      </tr>
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> Payed & played </td>
+        <td> {{ payed_decks_was_played.all }} </td>
+        <td> {{ payed_decks_was_played.promo }} </td>
+        <td> {{ payed_decks_was_played.money }} </td>
+      </tr>
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> Payed & played (>10)</td>
+        <td> {{ played_gte_ten_times_decks.all }} </td>
+        <td> {{ played_gte_ten_times_decks.promo }} </td>
+        <td> {{ played_gte_ten_times_decks.money }} </td>
+      </tr>
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> Print layout was  requested</td>
+        <td> {{ print_layout_logs.all }} </td>
+        <td> {{ print_layout_logs.promo }} </td>
+        <td> {{ print_layout_logs.money }} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3>Demo decks stats</h3>
+<div class="content" id="demo-stats">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#">Demo Deck</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Games played</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Games started</a>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for demo in demo_stats %}
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> {{ demo.title }}</td>
+        <td> {{ demo.games_count }} </td>
+        <td> {{ demo.games_started }} </td>
+      </tr>
+    {%  endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h3>Users</h3>
+<div class="container" id="users">
+<table>
+<thead>
+  <tr>
+    <th>
+      <div class="text">
+        <a href="#"></a>
+      </div>
+    </th>
+    <th>
+      <div class="text">
+        <a href="#">Total</a>
+      </div>
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="{% cycle 'row1' 'row2' %}">
+    <td> Users</td>
+    <td> {{ users }} </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous"></script>
+{{ form.media.js }}
+<script>
+$(function () {
+  $("#id_start_date").datepicker({
+    format:'dd/mm/yyyy',
+  });
+  $("#id_end_date").datepicker({
+    format:'dd/mm/yyyy',
+  });
+});
+</script>
+{% endblock %}
+{% block pagination %}{% endblock %}

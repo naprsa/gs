@@ -1,0 +1,32 @@
+<div class="results">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#">IP/Player</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Accesses</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Total game played</a>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in players %}
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td> {{ item.player}} </td>
+        <td> {{ item.stats.accesses }} </td>
+        <td> {{ item.stats.games }} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,36 @@
+td.original p {
+  visibility: hidden
+}
+
+.inline-group .tabular tr.has_original td {
+    padding-top: 5px;
+}
+
+
+.aligned label + p, .aligned label + div.help, .aligned label + div.readonly {
+    padding: 6px 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 110px;
+    text-align: left;
+}
+
+.aligned label {
+    display: block;
+    padding: 4px 10px 0 0;
+    float: left;
+    width: 110px;
+    word-wrap: break-word;
+    line-height: 1;
+}
+
+fieldset .fieldBox {
+    float: left;
+    margin-right: 50px;
+    width: 275px;
+}
+
+fieldset .fieldBox.field-uid,
+fieldset .fieldBox.field-full_path_to_deck_media {
+    width: 400px;
+}
